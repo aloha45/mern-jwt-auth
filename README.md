@@ -1,5 +1,11 @@
-# react-jwt-template
+# Breadcrumbs
 
-This is a template for a full-stack MERN application with built in user authentication utilizing JWT.
+Personal connections left behind and found.
 
-Open template and build app within for token authenticiation.
+Built in React.
+
+## Team
+- Cory
+- Margaret
+- Nina
+- Rob
