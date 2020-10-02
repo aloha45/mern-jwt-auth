@@ -6,11 +6,29 @@ import Login from "../Login/Login";
 import authService from "../../services/authService";
 import Users from '../Users/Users'
 import "./App.css";
+import SpotifyWebApi from "spotify-web-api-js";
+
+const spotifyApi = new SpotifyWebApi()
 
 class App extends Component {
   state = {
+    loggedIn: false,
+    spotifyToken: '',
     user: authService.getUser()
   };
+
+  getHashParams() {
+    var hashParams = {};
+    var e, r = /([^&;=]+)=?([^&;]*)/g,
+        q = window.location.hash.substring(1);
+    e = r.exec(q)
+    while (e) {
+       hashParams[e[1]] = decodeURIComponent(e[2]);
+       e = r.exec(q);
+    }
+    this.setState({spotifyToken : hashParams.access_token})
+    return hashParams;
+  }
 
   handleLogout = () => {
     authService.logout();
@@ -20,6 +38,15 @@ class App extends Component {
   handleSignupOrLogin = () => {
     this.setState({ user: authService.getUser() });
   };
+
+  async componentDidMount() {
+    const params = this.getHashParams();
+    const token = params.access_token;
+    if (token) {
+      this.setState({loggedIn: true})
+      spotifyApi.setAccessToken(token);
+    }
+  }
 
   render() {
     const {user} = this.state
